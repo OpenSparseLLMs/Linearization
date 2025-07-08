@@ -3,13 +3,13 @@
 [![arXiv](https://img.shields.io/badge/Arxiv-2503.01496-b31b1b.svg?logo=arXiv)](https://arxiv.org/abs/2503.01496)
  [![huggingface weights](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Weights-ffc107?color=ffc107&logoColor=white)](https://huggingface.co/collections/linear-moe-hub/liger-67d904bffd7f9b77ade7747d)
 
-## Framework
+## Overview
 
 <p align="center">
   <img src="assets/liger_framework.png" width="90%" />
 </p>
 <div align="center">
-Figure 1: Liger Framework
+Figure 1: Liger Linearization Framework
 </div>
 
 ## Environment
@@ -26,14 +26,10 @@ pip install -e .
 
 ## Linearization
 
-1. Copy your pre-trained base model directory (e.g. Meta-Llama-3-8B) to `./checkpoints/`;
-2. Modify the `config` file of the original Llama-3 base model to the `config` file of the Liger model (see `./checkpoints/liger_gla_base/config.json`);
-3. Modify the linearization settings in `./configs/config.yaml ` file (e.g. liger_gla.yaml); 
-4. Run the linearization script:
-
-```bash
-sh scripts/train_liger.sh
-```
+1. Copy your base model weights (e.g. Qwen3-8B) to `./checkpoints/`, and renamed as `liger_qwen3_gla_base`;
+2. Modify the `config.json` under `liger_qwen3_gla_base` with new linearized `"architectures"` and `"model_type"`;
+3. Modify the linearization settings under `configs` (e.g. liger_qwen3_gla.yaml); 
+4. Run the linearization script: `sh scripts/train_liger.sh`
 
 ## Evaluation
 
@@ -46,7 +42,7 @@ pip install -e .
 
 ```bash
 python -m eval.harness --model hf \
-    --model_args pretrained=/your/Liger/checkpoints/liger_base_model,peft=/your/Liger/checkpoints/lora_adapter_path \
+    --model_args pretrained=/your/Liger/checkpoints/liger_base_model, peft=/your/Liger/checkpoints/lora_adapter_path \
     --tasks piqa,arc_easy,arc_challenge,hellaswag,winogrande \
     --batch_size 64 \
     --device cuda \
