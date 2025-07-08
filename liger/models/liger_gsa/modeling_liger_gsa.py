@@ -21,12 +21,10 @@ from transformers.models.llama.modeling_llama import (
     apply_rotary_pos_emb,
     repeat_kv,
     LlamaMLP,
-    LlamaAttention, LlamaFlashAttention2, LlamaSdpaAttention,
     LlamaDecoderLayer,
     LlamaForCausalLM,
     LlamaModel,
     LlamaPreTrainedModel,
-    LLAMA_INPUTS_DOCSTRING,
 )
 from transformers.utils import logging, add_start_docstrings_to_model_forward
 from transformers.utils import is_flash_attn_2_available, is_flash_attn_greater_or_equal_2_10
@@ -273,7 +271,6 @@ class LigerGSAModel(LlamaModel, LigerGSAPreTrainedModel):
     def set_input_embeddings(self, value):
         self.embed_tokens = value
 
-    @add_start_docstrings_to_model_forward(LLAMA_INPUTS_DOCSTRING)
     def forward(
         self,
         input_ids: torch.LongTensor = None,

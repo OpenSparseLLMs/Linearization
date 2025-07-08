@@ -1,12 +1,12 @@
 data:
   name: "alpaca_cleand"
-  path: "yahma/alpaca-cleaned"
+  path: "/Your/Path/to/data/yahma/alpaca-cleaned"
   batch_size: 8
   micro_batch_size: 1
   val_set_size: 200
 model:
-  name: 'liger_qwen2_gla'
-  pretrained_model_name_or_path: '/your/Liger/checkpoints/liger_qwen25_gla_base'  
+  name: 'liger_qwen25_gla'
+  pretrained_model_name_or_path: '/Your/Path/to/Linearization/checkpoints/liger_qwen25_gla_base'
   max_length: 1024
   # tokenizer
   add_eos_token: False 

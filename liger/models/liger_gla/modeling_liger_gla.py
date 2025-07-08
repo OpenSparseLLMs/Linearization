@@ -20,14 +20,10 @@ from transformers.models.llama.modeling_llama import (
     repeat_kv,
     apply_rotary_pos_emb,
     LlamaMLP,
-    LlamaAttention, 
-    LlamaFlashAttention2, 
-    LlamaSdpaAttention,
     LlamaDecoderLayer,
     LlamaForCausalLM,
     LlamaModel,
     LlamaPreTrainedModel,
-    LLAMA_INPUTS_DOCSTRING,
 )
 
 from transformers.utils import logging, add_start_docstrings_to_model_forward
@@ -225,7 +221,6 @@ class LigerGLAModel(LlamaModel, LigerGLAPreTrainedModel):
         # Initialize weights and apply final processing
         self.post_init()
 
-    @add_start_docstrings_to_model_forward(LLAMA_INPUTS_DOCSTRING)
     def forward(
         self,
         input_ids: torch.LongTensor = None,

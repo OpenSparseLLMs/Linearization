@@ -19,12 +19,10 @@ from transformers.models.llama.modeling_llama import (
     apply_rotary_pos_emb,
     repeat_kv,
     LlamaMLP,
-    LlamaAttention, # LlamaFlashAttention2, LlamaSdpaAttention,
     LlamaDecoderLayer,
     LlamaForCausalLM,
     LlamaModel,
     LlamaPreTrainedModel,
-    LLAMA_INPUTS_DOCSTRING,
 )
 
 
@@ -231,7 +229,6 @@ class LigerHGRN2Model(LlamaModel, LigerHGRN2PreTrainedModel):
         # Initialize weights and apply final processing
         self.post_init()
 
-    @add_start_docstrings_to_model_forward(LLAMA_INPUTS_DOCSTRING)
     def forward(
         self,
         input_ids: torch.LongTensor = None,

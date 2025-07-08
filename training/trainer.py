@@ -53,7 +53,7 @@ class DefaultTrainer():
         self.metric_for_best_model = self.args.metric_for_best_model
         self.num_train_epochs = self.args.num_train_epochs
         self.gradient_accumulation_steps = self.args.gradient_accumulation_steps
-        self.evaluation_strategy = self.args.evaluation_strategy
+        self.eval_strategy = self.args.eval_strategy
         self.greater_is_better = self.args.greater_is_better
         self.is_better = (lambda x, y: x > y if self.args.greater_is_better else x < y)
         self.load_best_model_at_end = self.args.load_best_model_at_end
@@ -97,7 +97,7 @@ class DefaultTrainer():
         pbar = tqdm(range(self.num_train_epochs), leave=False, colour='white', desc='Training')
         for ix, epoch in enumerate(pbar):
             model, early_stopping = self.train_step(model, epoch)
-            if self.evaluation_strategy == 'epoch':
+            if self.eval_strategy == 'epoch':
                 _eval_metrics = self.eval_step(model, step=self.grad_step)
                 print(f'Epoch {ix} metrics:', _eval_metrics)
             if early_stopping:
@@ -173,7 +173,7 @@ class DefaultTrainer():
                 if self.wandb is not None:
                     self.wandb.log(self.train_metrics, step=self.grad_step)
 
-            if self.evaluation_strategy == 'steps':
+            if self.eval_strategy == 'steps':
                 if (self.grad_step % self.eval_steps == 0 and self.grad_step > 0 and not eval_for_step):
                     _eval_metrics = self.eval_step(model, step=self.grad_step)
                     print(f'Grad Step {self.grad_step} eval metrics:', _eval_metrics)

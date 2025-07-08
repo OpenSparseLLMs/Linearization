@@ -13,7 +13,7 @@ import torch.utils
 import torch.utils.data
 import torch.utils.data.dataloader
 from transformers import AutoModel, AutoModelForCausalLM, AutoTokenizer, AutoConfig
-from transformers import Trainer, TrainingArguments
+from transformers import TrainingArguments
 from peft import LoraConfig, TaskType, PeftModel, get_peft_model
 
 from training.trainer import DefaultTrainer, FinetuneTrainer
@@ -24,13 +24,21 @@ from training.dataloader import load_data
 def train(config):
 
     trainer = FinetuneTrainer
-    model_config = AutoConfig.from_pretrained(config.model.pretrained_model_name_or_path)
     if config.model.name == "liger_gla":
         from liger.models.liger_gla import LigerGLAConfig
         liger_model_config = LigerGLAConfig()
     elif config.model.name == "liger_gsa":
         from liger.models.liger_gsa import LigerGSAConfig
         liger_model_config = LigerGSAConfig()
+    elif config.model.name == "liger_qwen25_gla":
+        from liger.models.liger_qwen2_gla import LigerQwen2GLAConfig
+        liger_model_config = LigerQwen2GLAConfig()
+    elif config.model.name == "liger_qwen3_gla":
+        from liger.models.liger_qwen3_gla import LigerQwen3GLAConfig
+        liger_model_config = LigerQwen3GLAConfig()
+    elif config.model.name == "liger_qwen3_moe_gla":
+        from liger.models.liger_qwen3_moe_gla import LigerQwen3MoeGLAConfig
+        liger_model_config = LigerQwen3MoeGLAConfig()
     elif config.model.name == "lolcats_at":
         # first stage: attention transfer
         from lolcats.models.lolcats import LolcatsConfig
@@ -43,7 +51,6 @@ def train(config):
     else:
         raise NotImplementedError(config.model.name)
     
-    liger_model_config.__dict__.update(model_config.__dict__)
     model_config = liger_model_config
     model = AutoModelForCausalLM.from_pretrained(
         config.model.pretrained_model_name_or_path, 
@@ -122,7 +129,7 @@ def train(config):
             max_grad_norm=config.train.max_grad_norm,
             logging_steps=1,
             optim=config.train.optim,
-            evaluation_strategy="steps" if config.data.val_set_size > 0 else "no",
+            eval_strategy="steps" if config.data.val_set_size > 0 else "no",
             save_strategy="steps",
             eval_steps=200 if config.data.val_set_size > 0 else None,
             save_steps=1000,
