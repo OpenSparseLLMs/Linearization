@@ -1,0 +1,24 @@
+data:
+  name: "alpaca_cleand"
+  path: "/Your/Path/to/data/yahma/alpaca-cleaned"
+  batch_size: 8
+  micro_batch_size: 1
+  val_set_size: 200
+model:
+  name: 'liger_qwen3_gla'
+  pretrained_model_name_or_path: 'Your/Path/to/Linearization/checkpoints/liger_qwen3_gla_base'
+  max_length: 1024
+  # tokenizer
+  add_eos_token: False 
+  
+  device_map: 'auto' 
+train:
+  optim: 'adamw_torch'
+  lr: 0.001
+  epochs: 2
+  max_grad_norm: 1.0
+  output_dir: 'checkpoints'
+  train_qk: True
+  train_qk_lora: True
+  train_v: True
+  train_v_lora: True
